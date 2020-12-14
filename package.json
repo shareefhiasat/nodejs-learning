@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-learning",
+  "version": "1.0.0",
+  "description": "learn only",
+  "main": "6-server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shareefhiasat/nodejs-learning.git"
+  },
+  "author": "shareef",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shareefhiasat/nodejs-learning/issues"
+  },
+  "homepage": "https://github.com/shareefhiasat/nodejs-learning#readme"
+}
