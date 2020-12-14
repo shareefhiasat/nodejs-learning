@@ -10,8 +10,32 @@ const server = http.createServer((req, res) => {
     // res.setHeader('Content-Type', 'text/plain');
     res.setHeader('Content-Type', 'text/html');
 
+    let path = './views/';
+
+    switch (req.url) {
+        case '/':
+            path += 'index.html';
+            break;
+        case '/about':
+            path += 'about.html';
+            break;
+        default:
+            path += '404.html';
+            break;
+    }
+
     //send an html file
-    fs.readFile('./views/index.html', (err, data) => {
+    // fs.readFile('./views/index.html', (err, data) => {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         // res.write(data);
+    //         //or shorthand if you have only 1 thing to write
+    //         res.end(data);
+    //     }
+    // });
+    
+    fs.readFile(path, (err, data) => {
         if (err) {
             console.log(err);
         } else {
@@ -19,7 +43,6 @@ const server = http.createServer((req, res) => {
             //or shorthand if you have only 1 thing to write
             res.end(data);
         }
-        res.end();
     });
 
     //VERY BASIC WAY
