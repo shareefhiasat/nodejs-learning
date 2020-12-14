@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/shareefhiasat/nodejs-learning/issues"
   },
-  "homepage": "https://github.com/shareefhiasat/nodejs-learning#readme"
+  "homepage": "https://github.com/shareefhiasat/nodejs-learning#readme",
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
 }

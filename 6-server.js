@@ -1,10 +1,21 @@
 const http = require('http');
 const fs = require('fs');
+const lo = require('lodash');
 
 // we can store it but we dont have to.
 const server = http.createServer((req, res) => {
     // console.log('request made');
-    console.log(req.url, req.method);
+    // console.log(req.url, req.method);
+
+    //test lodash command it will print radnom
+    const randNumber = lo.random(0, 20);
+    console.log(randNumber);
+
+    //lodash this will print ONCE!
+    const greet = lo.once(() => { console.log('greet') });
+    greet();
+    greet();
+    greet();
 
     //set header content type
     // res.setHeader('Content-Type', 'text/plain');
