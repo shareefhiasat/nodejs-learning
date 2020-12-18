@@ -7,6 +7,9 @@ const express = require('express');
 //express app
 const app = express();
 
+//middleware and static files
+app.use(express.static('public'));
+
 //use morgan for logging
 app.use(morgan('dev'));
 
