@@ -12,6 +12,18 @@ app.set('view engine', 'ejs');
 //listen for request, we can store it in instance for using sockets.
 app.listen(3000);
 
+app.use((req, res, next) => {
+    console.log('host:', req.hostname);
+    console.log('path:', req.path);
+    console.log('method:', req.method);
+    next();
+});
+
+app.use((req, res, next) => {
+    console.log('Test another next');
+    next();
+});
+
 app.get('/', (req, res) => {
     //method 1
     // res.write('something');
