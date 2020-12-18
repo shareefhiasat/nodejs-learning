@@ -1,8 +1,14 @@
+// add Morgan
+const morgan = require('morgan');
+
 //import express
 const express = require('express');
 
 //express app
 const app = express();
+
+//use morgan for logging
+app.use(morgan('dev'));
 
 //register view engine, this will look into views folder by default
 app.set('view engine', 'ejs');
