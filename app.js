@@ -23,6 +23,12 @@ mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
 //middleware and static files
 app.use(express.static('public'));
 
+//use morgan for logging
+app.use(morgan('dev'));
+
+//middleware
+app.use(express.urlencoded({ extended: true }));
+
 //mongoose and mongo sandbox routes
 app.get('/add-blog', (req, res) => {
     const blog = new Blog({
@@ -57,9 +63,6 @@ app.get('/single-blog', (req, res) => {
             console.log(err);
         });
 });
-
-//use morgan for logging
-app.use(morgan('dev'));
 
 //register view engine, this will look into views folder by default
 app.set('view engine', 'ejs');
@@ -123,6 +126,15 @@ app.get('/blogs', (req, res) => {
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: 'Create a new blog' });
 });
+
+//app post create blog
+app.post('/blogs', (req, res) => {
+    // console.log(req.body);
+    const blog = new Blog(req.body);
+    blog.save()
+        .then((result) => res.redirect('/'))
+        .catch((err) => console.log(err))
+})
 
 //Manage notfound, iff we dont have match and reach this point redirect to 404 not found page!, so we put it at last
 app.use((req, res) => {
