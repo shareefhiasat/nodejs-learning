@@ -1,14 +1,62 @@
+//Add models
+const Blog = require('./models/blog');
+
 // add Morgan
 const morgan = require('morgan');
 
 //import express
 const express = require('express');
+const { mongo } = require('mongoose');
 
 //express app
 const app = express();
 
+//mongo db 3rd party
+const mongoose = require('mongoose');
+
+//connect to db
+const dbUri = 'mongodb://127.0.0.1:27017/mydb';
+mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then((result) => app.listen(3000))
+    .catch((err) => console.log('Error', err));
+
 //middleware and static files
 app.use(express.static('public'));
+
+//mongoose and mongo sandbox routes
+app.get('/add-blog', (req, res) => {
+    const blog = new Blog({
+        title: 'new blog',
+        snippet: 'about my new blog',
+        body: 'more about my new blog'
+    });
+
+    blog.save()
+        .then((result) => res.send(result))
+        .catch((err) => console.log(err));
+
+});
+
+//get all mongodb blogs
+app.get('/all-blogs', (req, res) =>
+    Blog.find()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+);
+
+//get single blog
+app.get('/single-blog', (req, res) => {
+    Blog.findById('5fdced3b1180960f752bd11f')
+        .then((result) => {
+            res.send(result);
+        }).catch((err) => {
+            console.log(err);
+        })
+});
 
 //use morgan for logging
 app.use(morgan('dev'));
@@ -19,7 +67,7 @@ app.set('view engine', 'ejs');
 // app.set('views', 'my-views');
 
 //listen for request, we can store it in instance for using sockets.
-app.listen(3000);
+// app.listen(3000);
 
 app.use((req, res, next) => {
     console.log('host:', req.hostname);
