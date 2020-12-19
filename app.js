@@ -55,7 +55,7 @@ app.get('/single-blog', (req, res) => {
             res.send(result);
         }).catch((err) => {
             console.log(err);
-        })
+        });
 });
 
 //use morgan for logging
@@ -95,13 +95,14 @@ app.get('/', (req, res) => {
     //method 4 dynamic content
     // res.render('index');
 
-    const blogs = [
-        { title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur' },
-        { title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur' },
-        { title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur' },
-    ];
+    // const blogs = [
+    //     { title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur' },
+    //     { title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur' },
+    //     { title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur' },
+    // ];
 
-    res.render('index', { title: 'Home', blogs });
+    // res.render('index', { title: 'Home', blogs });
+    res.redirect('/blogs');
 });
 
 //add redirect example
@@ -110,6 +111,14 @@ app.get('/about', (req, res) => {
     res.render('about', { title: 'About' });
     // res.sendFile('./views/about.html', { root: __dirname });
 });
+
+app.get('/blogs', (req, res) => {
+    Blog.find().sort({ CreatedAt: -1 })
+        .then((result) => {
+            res.render('index', { title: 'All Blogs', blogs: result })
+        })
+        .catch((err) => console.log(err))
+})
 
 app.get('/blogs/create', (req, res) => {
     res.render('create', { title: 'Create a new blog' });
