@@ -3,6 +3,8 @@ const router = express.Router();
 
 const Blog = require('../models/blog');
 
+const blogController = require('../controllers/blog-controller');
+
 //mongoose and mongo sandbox routes
 router.get('/add-blog', (req, res) => {
     const blog = new Blog({
@@ -17,13 +19,7 @@ router.get('/add-blog', (req, res) => {
 
 });
 
-router.get('/', (req, res) => {
-    Blog.find().sort({ CreatedAt: -1 })
-        .then((result) => {
-            res.render('index', { title: 'All Blogs', blogs: result })
-        })
-        .catch((err) => console.log(err))
-})
+router.get('/', blogController.blog_index);
 
 router.get('/create', (req, res) => {
     res.render('create', { title: 'Create a new blog' });
