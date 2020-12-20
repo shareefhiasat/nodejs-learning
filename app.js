@@ -1,5 +1,8 @@
 //Add models
-const Blog = require('./models/blog');
+// const Blog = require('./models/blog');
+
+//Add mini app blog routes
+const blogRoutes = require('./routes/blog-routes')
 
 // add Morgan
 const morgan = require('morgan');
@@ -26,43 +29,68 @@ app.use(express.static('public'));
 //use morgan for logging
 app.use(morgan('dev'));
 
-//middleware
+//middleware to print in logs the body submitted
 app.use(express.urlencoded({ extended: true }));
 
-//mongoose and mongo sandbox routes
-app.get('/add-blog', (req, res) => {
-    const blog = new Blog({
-        title: 'new blog',
-        snippet: 'about my new blog',
-        body: 'more about my new blog'
-    });
+//blog routes
+app.use('/blogs', blogRoutes);
 
-    blog.save()
-        .then((result) => res.send(result))
-        .catch((err) => console.log(err));
+//moved to blog-routes.js
+// //mongoose and mongo sandbox routes
+// app.get('/add-blog', (req, res) => {
+//     const blog = new Blog({
+//         title: 'new blog',
+//         snippet: 'about my new blog',
+//         body: 'more about my new blog'
+//     });
 
-});
+//     blog.save()
+//         .then((result) => res.send(result))
+//         .catch((err) => console.log(err));
 
-//get all mongodb blogs
-app.get('/all-blogs', (req, res) =>
-    Blog.find()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-);
+// });
 
-//get single blog
-app.get('/single-blog', (req, res) => {
-    Blog.findById('5fdced3b1180960f752bd11f')
-        .then((result) => {
-            res.send(result);
-        }).catch((err) => {
-            console.log(err);
-        });
-});
+// app.get('/blogs', (req, res) => {
+//     Blog.find().sort({ CreatedAt: -1 })
+//         .then((result) => {
+//             res.render('index', { title: 'All Blogs', blogs: result })
+//         })
+//         .catch((err) => console.log(err))
+// })
+
+// app.get('/blogs/create', (req, res) => {
+//     res.render('create', { title: 'Create a new blog' });
+// });
+
+// //app post create blog
+// app.post('/blogs', (req, res) => {
+//     // console.log(req.body);
+//     const blog = new Blog(req.body);
+//     blog.save()
+//         .then((result) => res.redirect('/'))
+//         .catch((err) => console.log(err))
+// });
+
+// //get all mongodb blogs
+// app.get('/all-blogs', (req, res) =>
+//     Blog.find()
+//         .then((result) => {
+//             res.send(result);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         })
+// );
+
+// //get single blog
+// app.get('/single-blog', (req, res) => {
+//     Blog.findById('5fdced3b1180960f752bd11f')
+//         .then((result) => {
+//             res.send(result);
+//         }).catch((err) => {
+//             console.log(err);
+//         });
+// });
 
 //register view engine, this will look into views folder by default
 app.set('view engine', 'ejs');
@@ -115,26 +143,7 @@ app.get('/about', (req, res) => {
     // res.sendFile('./views/about.html', { root: __dirname });
 });
 
-app.get('/blogs', (req, res) => {
-    Blog.find().sort({ CreatedAt: -1 })
-        .then((result) => {
-            res.render('index', { title: 'All Blogs', blogs: result })
-        })
-        .catch((err) => console.log(err))
-})
 
-app.get('/blogs/create', (req, res) => {
-    res.render('create', { title: 'Create a new blog' });
-});
-
-//app post create blog
-app.post('/blogs', (req, res) => {
-    // console.log(req.body);
-    const blog = new Blog(req.body);
-    blog.save()
-        .then((result) => res.redirect('/'))
-        .catch((err) => console.log(err))
-})
 
 //Manage notfound, iff we dont have match and reach this point redirect to 404 not found page!, so we put it at last
 app.use((req, res) => {
